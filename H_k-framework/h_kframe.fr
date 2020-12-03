@@ -1,0 +1,94 @@
+(* ****************************************************************** *)
+(* *****                                                        ***** *)
+(* *****  FeynRules model file: H potential in k-framework      ***** *)
+(* *****                                                        ***** *)
+(* *****  Author: L. Mantani                                    ***** *)
+(* *****                                                        ***** *)
+(* ****************************************************************** *)
+
+
+(* ************************** *)
+(* *****  Information   ***** *)
+(* ************************** *)
+
+M$ModelName = "higgs_kframework";
+
+M$Information = {
+ Authors      -> {"L. Mantani"},
+ Institutions -> {"Univ. catholique de Louvain"},
+ Emails       -> {"luca.mantani@uclouvain.be"},
+ References   -> {"xxx et al., arXiv:17xx.xxxxx"},
+ Version      -> "1.1",
+ Date         -> "2019.10.12"
+};
+
+(* ************************** *)
+(* *****  Change  log   ***** *)
+(* ************************** *)
+
+(* 2016.10.10 v1.0 - release version.                               *)
+M$InteractionOrderLimit = { {NPH3, 2}, {NPH4, 2}, {NPVVH, 2}, {NPVVHH, 2}, {NPVVHHH, 2} };
+
+M$InteractionOrderHierarchy = { {QCD, 1}, {NPH3, 2}, {NPH4, 2}, {NPVVH, 2}, {NPVVHH, 2}, {NPVVHHH, 2}, {QED, 2} };
+
+(* ************************** *)
+(* *****   Parameters   ***** *)
+(* ************************** *)  
+M$Parameters = {
+    delta3 == {
+        ParameterType -> External,
+        BlockName     -> KFRAMEWORK,
+        InteractionOrder -> {NPH3, 1},
+        OrderBlock    -> 1,
+        Value         -> 1.0,
+        Description   -> "delta modifier of the H trilinear coupling"
+    },
+
+    delta4 == {
+        ParameterType -> External,
+        BlockName     -> KFRAMEWORK,
+        InteractionOrder -> {NPH4, 1},
+        OrderBlock    -> 2,
+        Value         -> 1.0,
+        Description   -> "delta modifier of the H quadrilinear coupling"
+    },
+
+    deltaVVH == {
+        ParameterType -> External,
+        BlockName     -> KFRAMEWORK,
+        InteractionOrder -> {NPVVH, 1},
+        OrderBlock    -> 3,
+        Value         -> 1.0,
+        Description   -> "delta modifier of the VVH coupling"
+    },
+
+    deltaVVHH == {
+        ParameterType -> External,
+        BlockName     -> KFRAMEWORK,
+        InteractionOrder -> {NPVVHH, 1},
+        OrderBlock    -> 4,
+        Value         -> 1.0,
+        Description   -> "delta modifier of the VVHH coupling"
+    },
+
+    deltaVVHHH == {
+        ParameterType -> External,
+        BlockName     -> KFRAMEWORK,
+        InteractionOrder -> {NPVVHHH, 1},
+        OrderBlock    -> 5,
+        Value         -> 1.0,
+        Description   -> "delta modifier of the VVHHH coupling"
+    }
+
+};
+
+
+(* ************************** *)
+(* *****   Lagrangian   ***** *)
+(* ************************** *)
+
+LHK := - lam vev delta3 H H H - 1/4 lam delta4 H H H H
+
+LVHK := 1/2 deltaVVH gw^2 vev H Wbar[mu] W[mu] + 1/4 deltaVVH gw^2/cw^2 vev H Z[mu] Z[mu] \
+        + 1/4 deltaVVHH gw^2 H H Wbar[mu] W[mu] + 1/8 deltaVVHH gw^2/cw^2 H H Z[mu] Z[mu] \
+        + 1/4 deltaVVHHH (gw^2/ vev) H H H Wbar[mu] W[mu] + 1/8 deltaVVHHH (gw^2/(cw^2 * vev)) H H H Z[mu] Z[mu]

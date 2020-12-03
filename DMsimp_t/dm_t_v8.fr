@@ -1,0 +1,159 @@
+(* ****************************************************************** *)
+(* *****                                                        ***** *)
+(* *****  FeynRules model file: Simplified DM models            ***** *)
+(* *****                      t-channel spin-1 octet mediator   ***** *)
+(* *****  Author: B. Fuks, L. Mantani, K. Mawatari              ***** *)
+(* *****                                                        ***** *)
+(* ****************************************************************** *)
+
+(* ************************** *)
+(* *****  Information   ***** *)
+(* ************************** *)
+M$ModelName = "DMsimp_t_v8";
+
+M$Information = {
+ Authors      -> {"B. Fuks, L. Mantani, K. Mawatari"},
+ Institutions -> {"Sorbonne Univ., Univ. catholique de Louvain, LPSC Grenoble"},
+ Emails       -> {"fuks@lpthe.jussieu.fr","luca.mantani@uclouvain.be", "kentarou.mawatari@lpsc.in2p3.fr"},
+ URLs         -> "http://feynrules.irmp.ucl.ac.be/wiki/DMsimp/",
+ References   -> {"xxx et al., arXiv:17xx.xxxxx"},
+ Version      -> "1.0",
+ Date         -> "2017.10.03"
+};
+
+(* ************************** *)
+(* *****  Change  log   ***** *)
+(* ************************** *)
+
+(* 2016.10.10 v1.0 - release version.               *)
+
+(***** Setting for interaction order (as e.g. used by MadGraph 5)  ******)
+
+M$InteractionOrderLimit = {
+ {DMT, 2}
+};
+
+M$InteractionOrderHierarchy = {
+ {QCD, 1}, {DMT, 2}, {QED, 2}
+};
+
+(* ************************** *)
+(* *****     Fields     ***** *)
+(* ************************** *)
+
+M$ClassesDescription = {
+
+S[7] == { ClassName -> Xr,
+	SelfConjugate -> True,
+	Mass -> {MXr, 10.},
+	Width->0,
+	PDG -> 5000511,
+	TeX -> Subscript[X,r],
+	FullName -> "Real scalar DM" },
+
+V[13] == { ClassName -> Xv,
+	SelfConjugate -> True,
+	Mass -> {MXv, 10.},
+    Width -> 0,
+    PDG -> 12345678,
+    TeX -> Subscript[X,v],
+    FullName -> "Real vector DM" },
+
+V[21] == { ClassName -> V8,
+	SelfConjugate -> True,
+	Indices -> {Index[Gluon]},
+	PDG -> 999999,
+	Mass -> {MV8, 1000.},
+	Width -> {WV8, 10.} }
+};
+	
+
+(* ************************** *)
+(* *****   Parameters   ***** *)
+(* ************************** *)
+
+M$Parameters = {
+
+gr == {
+	ParameterType    -> External,
+    InteractionOrder -> {DMT, 1},
+    BlockName        -> DMINPUT,
+    TeX              -> Subscript[g,r],
+    Description      -> "",
+    Value            -> 1.0
+},
+
+cr == {
+	ParameterType    -> External,
+    InteractionOrder -> {DMT, 1},
+    BlockName        -> DMINPUT,
+    TeX              -> Subscript[c,r],
+    Description      -> "",
+    Value            -> 1.0
+},
+
+gv == {
+	ParameterType    -> External,
+    InteractionOrder -> {DMT, 1},
+    BlockName        -> DMINPUT,
+    TeX              -> Subscript[g,v],
+    Description      -> "",
+    Value            -> 1.0
+},
+
+cv == {
+	ParameterType    -> External,
+    InteractionOrder -> {DMT, 1},
+    BlockName        -> DMINPUT,
+    TeX              -> Subscript[c,v],
+    Description      -> "",
+    Value            -> 1.0
+},
+
+Lambda == {
+	ParameterType    -> External,
+    BlockName        -> DMINPUT,
+    Description      -> "",
+    Value            -> 1000.0
+
+},
+
+lr == {
+	ParameterType    -> External,
+	InteractionOrder -> {DMT, 1},
+    BlockName        -> DMINPUT,
+    Description      -> "",
+    Value            -> 1.0 
+	
+},
+
+lv == {
+	ParameterType    -> External,
+	InteractionOrder -> {DMT, 1},
+    BlockName        -> DMINPUT,
+    Description      -> "",
+    Value            -> 1.0
+	
+}
+
+
+};
+
+
+(* ************************** *)
+(* *****   Lagrangian   ***** *)
+(* ************************** *)
+
+Lkin := -1/4 * (DC[V8[nu,aa],mu] - DC[V8[mu,aa],nu])(DC[V8[nu,aa],mu] - DC[V8[mu,aa],nu]) +
+        gs/2 * V8[mu,c] f[a,b,c] V8[nu,b] FS[G,mu,nu,a] ;
+
+Lintr := gr/(Lambda) * (FS[G,mu,nu,aa] DC[V8[mu,aa],nu] Xr) +
+	    cr/(Lambda) * (FS[G,mu,nu,aa] V8[mu,aa] del[Xr,nu]) +
+		lr * V8[mu,aa] V8[mu,aa] Xr Xr ;
+
+Lintv := gv FS[G,mu,nu,aa] Xv[mu] V8[nu,aa] + 
+         lv V8[mu,aa] V8[mu,aa] Xv[nu] Xv[nu] + 
+         lv V8[mu,aa] V8[nu,aa] Xv[mu] Xv[nu]
+
+LtV8 := Lkin + Lintr + Lintv; 
+

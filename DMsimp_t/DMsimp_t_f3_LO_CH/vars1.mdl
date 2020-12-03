@@ -1,0 +1,69 @@
+DMsimp_t_f3
+ Parameters
+  Name         | Value       |> Comment                                                                <|
+aEWM1          |127.9        |Inverse of the EW coupling constant at the Z pole                         |
+Gf             |0.0000116637 |Fermi constant                                                            |
+aS             |0.1184       |Strong coupling constant at the Z pole                                    |
+ymdo           |0.00504      |Down Yukawa mass                                                          |
+ymup           |0.00255      |Up Yukawa mass                                                            |
+yms            |0.101        |Strange Yukawa mass                                                       |
+ymc            |1.27         |Charm Yukawa mass                                                         |
+ymb            |4.7          |Bottom Yukawa mass                                                        |
+ymt            |172          |Top Yukawa mass                                                           |
+yme            |0.000511     |Electron Yukawa mass                                                      |
+ymm            |0.10566      |Muon Yukawa mass                                                          |
+ymtau          |1.777        |Tau Yukawa mass                                                           |
+cabi           |0.227736     |Cabibbo angle                                                             |
+gF3L1x1        |1.1          |Quark-F3 left-handed coupling ( gF3L1x1 )                                 |
+gF3L2x2        |1.1          |Quark-F3 left-handed coupling ( gF3L2x2 )                                 |
+gF3L3x3        |1.1          |Quark-F3 left-handed coupling ( gF3L3x3 )                                 |
+gF3uR1x1       |1.1          |up-type quark F3 right-handed coupling ( gF3uR1x1 )                       |
+gF3uR2x2       |1.1          |up-type quark F3 right-handed coupling ( gF3uR2x2 )                       |
+gF3uR3x3       |1.1          |up-type quark F3 right-handed coupling ( gF3uR3x3 )                       |
+gF3dR1x1       |1.1          |down-type quark F3 right-handed coupling ( gF3dR1x1 )                     |
+gF3dR2x2       |1.1          |down-type quark F3 right-handed coupling ( gF3dR2x2 )                     |
+gF3dR3x3       |1.1          |down-type quark F3 right-handed coupling ( gF3dR3x3 )                     |
+GG             |1.21977796370|Strong coupling constant at the Z pole   This value will be ignored and ca|
+MZ             |91.1876      |Mass of G0.                                                               |
+Me             |0.000511     |Mass of e.                                                                |
+MMU            |0.10566      |Mass of mu.                                                               |
+MTA            |1.777        |Mass of ta.                                                               |
+MU             |0.00255      |Mass of u.                                                                |
+MC             |1.27         |Mass of c.                                                                |
+MT             |172          |Mass of t.                                                                |
+MD             |0.00504      |Mass of d.                                                                |
+MS             |0.101        |Mass of s.                                                                |
+MB             |4.7          |Mass of b.                                                                |
+MH             |125          |Mass of H.                                                                |
+MXr            |10.          |Mass of Xr.                                                               |
+MXv            |10.          |Mass of Xv.                                                               |
+MF3uL1         |1000.        |Mass of F3uL1.                                                            |
+MF3uL2         |1000.        |Mass of F3uL2.                                                            |
+MF3uL3         |1000.        |Mass of F3uL3.                                                            |
+MF3dL1         |1000.        |Mass of F3dL1.                                                            |
+MF3dL2         |1000.        |Mass of F3dL2.                                                            |
+MF3dL3         |1000.        |Mass of F3dL3.                                                            |
+MF3uR1         |1000.        |Mass of F3uR1.                                                            |
+MF3uR2         |1000.        |Mass of F3uR2.                                                            |
+MF3uR3         |1000.        |Mass of F3uR3.                                                            |
+MF3dR1         |1000.        |Mass of F3dR1.                                                            |
+MF3dR2         |1000.        |Mass of F3dR2.                                                            |
+MF3dR3         |1000.        |Mass of F3dR3.                                                            |
+%WZ            |2.4952       |Width of G0.                                                              |
+%WW            |2.085        |Width of GP.                                                              |
+%WT            |1.50833649   |Width of t.                                                               |
+%WH            |0.00407      |Width of H.                                                               |
+%WF3uL1        |10.          |Width of F3uL1.                                                           |
+%WF3uL2        |10.          |Width of F3uL2.                                                           |
+%WF3uL3        |10.          |Width of F3uL3.                                                           |
+%WF3dL1        |10.          |Width of F3dL1.                                                           |
+%WF3dL2        |10.          |Width of F3dL2.                                                           |
+%WF3dL3        |10.          |Width of F3dL3.                                                           |
+%WF3uR1        |10.          |Width of F3uR1.                                                           |
+%WF3uR2        |10.          |Width of F3uR2.                                                           |
+%WF3uR3        |10.          |Width of F3uR3.                                                           |
+%WF3dR1        |10.          |Width of F3dR1.                                                           |
+%WF3dR2        |10.          |Width of F3dR2.                                                           |
+%WF3dR3        |10.          |Width of F3dR3.                                                           |
+E              |2.71828182845|The base of the natural logarithm.                                        |
+Pi             |3.14159265358|The circumference of a circle divided by the diameter.                    |

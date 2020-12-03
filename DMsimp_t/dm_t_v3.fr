@@ -1,0 +1,256 @@
+(* ****************************************************************** *)
+(* *****                                                        ***** *)
+(* *****  FeynRules model file: Simplified DM models            ***** *)
+(* *****                      t-channel spin-1 triplet mediator ***** *)
+(* *****  Author: B. Fuks, L. Mantani, K. Mawatari              ***** *)
+(* *****                                                        ***** *)
+(* ****************************************************************** *)
+
+
+(* ************************** *)
+(* *****  Information   ***** *)
+(* ************************** *)
+M$ModelName = "DMsimp_t_v3";
+
+M$Information = {
+ Authors      -> {"B. Fuks, L. Mantani, K. Mawatari"}, 
+ Institutions -> {"Sorbonne Univ., Univ. catholique de Louvain, LPSC Grenoble"},
+ Emails       -> {"fuks@lpthe.jussieu.fr", "kentarou.mawatari@lpsc.in2p3.fr"},
+ URLs         -> "http://feynrules.irmp.ucl.ac.be/wiki/DMsimp/",  
+ References   -> {"xxx et al., arXiv:16xx.xxxxx"},
+ Version      -> "1.2",
+ Date         -> "2017.10.20"
+};
+
+(* ************************** *)
+(* *****  Change  log   ***** *)
+(* ************************** *)
+
+(* 2016.10.27 v1.0 - release version.                                                 *)
+(* 2017.10.06 v1.1 - Making all couplings matrices and adding the missing mass terms. *)
+(* 2017.11.14 v1.2 - Restoring EW gauge invariance (LO only in unitary gauge).        *)
+
+
+(***** Setting for interaction order (as e.g. used by MadGraph 5)  ******)
+
+M$InteractionOrderLimit = { {DMT, 2} };
+
+M$InteractionOrderHierarchy = { {QCD, 1}, {DMT, 2}, {QED, 2} };
+
+
+(* ************************** *)
+(* *****     Fields     ***** *)
+(* ************************** *)
+M$ClassesDescription = {
+
+  F[7] == {
+    ClassName     -> Xd,
+    SelfConjugate -> False,
+    Mass          -> {MXd, 10.},
+    Width         -> 0,
+    PDG           -> 52,
+    TeX           -> Subscript[X,d],
+    FullName      -> "Dirac DM"
+  },
+
+  F[8] == {
+    ClassName     -> Xm,
+    SelfConjugate -> True,
+    Mass          -> {MXm, 100000.},
+    Width         -> 0,
+    PDG           -> 522,
+    TeX           -> Subscript[X,m],
+    FullName      -> "Majorana DM" 
+  },
+
+
+  V[23] == {
+    ClassName      -> V3L,
+    Unphysical     -> True,
+    SelfConjugate  -> False,
+    Indices        -> {Index[SU2D], Index[Generation],Index[Colour]},
+    FlavorIndex    -> SU2D,
+    QuantumNumbers -> {Y->1/6},
+    Definitions    -> { V3L[mu_,1,ff_,cc_] -> V3uL[mu,ff,cc], V3L[mu_,2,ff_,cc_] -> V3dL[mu,ff,cc]}
+   },
+
+  V[13] == {
+    ClassName        -> V3uL,
+    ClassMembers     -> {V3uL1, V3uL2, V3uL3},
+    SelfConjugate    -> False,
+    Indices          -> {Index[Generation],Index[Colour]},
+    FlavorIndex      -> Generation,
+    QuantumNumbers   -> {Q->2/3},
+    PDG              -> {3000002,3000004,3000006},
+    Mass             -> {MV3uL, {MV3uL1, 1000.},{MV3uL2, 1000.},{MV3uL3, 1000.}},
+    Width            -> {WV3uL, {WV3uL1, 10.},{WV3uL2, 10.},{WV3uL3, 10.}}
+  },
+(*  S[13] == {
+    ClassName        -> G3uL,
+    Goldstone        -> V3uL,
+    ClassMembers     -> {G3uL1, G3uL2, G3uL3},
+    SelfConjugate    -> False,
+    Indices          -> {Index[Generation],Index[Colour]},
+    FlavorIndex      -> Generation,
+    QuantumNumbers   -> {Q->2/3},
+    PDG              -> {3000252,3000254,3000256},
+    Mass             -> {MV3uL, {MV3uL1, 1000.},{MV3uL2, 1000.},{MV3uL3, 1000.}},
+    Width            -> {WV3uL, {WV3uL1, 10.},{WV3uL2, 10.},{WV3uL3, 10.}}
+  },*)
+
+  V[14] == {
+    ClassName        -> V3dL,
+    ClassMembers     -> {V3dL1, V3dL2, V3dL3},
+    SelfConjugate    -> False,
+    Indices          -> {Index[Generation],Index[Colour]},
+    FlavorIndex      -> Generation,
+    QuantumNumbers   -> {Q->-1/3},
+    PDG              -> {3000001,3000003,3000005},
+    Mass             -> {MV3dL, {MV3dL1, 1000.},{MV3dL2, 1000.},{MV3dL3, 1000.}},
+    Width            -> {WV3dL, {WV3dL1, 10.},{WV3dL2, 10.},{WV3dL3, 10.}}
+  },
+(*  S[14] == {
+    ClassName        -> G3dL,
+    Goldstone        -> V3dL,
+    ClassMembers     -> {G3dL1, G3dL2, G3dL3},
+    SelfConjugate    -> False,
+    Indices          -> {Index[Generation],Index[Colour]},
+    FlavorIndex      -> Generation,
+    QuantumNumbers   -> {Q->-1/3},
+    PDG              -> {3000251,3000253,3000255},
+    Mass             -> {MV3dL, {MV3dL1, 1000.}, {MV3dL2, 1000.}, {MV3dL3, 1000.}},
+    Width            -> {WV3dL, {WV3dL1, 10.  }, {WV3dL2, 10.  }, {WV3dL3, 10.  }}
+  },*)
+
+  V[15] == {
+    ClassName        -> V3uR,
+    ClassMembers     -> {V3uR1, V3uR2, V3uR3},
+    SelfConjugate    -> False,
+    Indices          -> {Index[Generation],Index[Colour]},
+    FlavorIndex      -> Generation,
+    QuantumNumbers   -> {Q->2/3},
+    PDG              -> {4000002,4000004,4000006},
+    Mass             -> {MV3uR, {MV3uR1, 1000.},{MV3uR2, 1000.},{MV3uR3, 1000.}},
+    Width            -> {WV3uR, {WV3uR1, 10.},{WV3uR2, 10.},{WV3uR3, 10.}}
+  },
+(*  S[15] == {
+    ClassName        -> G3uR,
+    Goldstone        -> V3uR,
+    ClassMembers     -> {G3uR1, G3uR2, G3uR3},
+    SelfConjugate    -> False,
+    Indices          -> {Index[Generation],Index[Colour]},
+    FlavorIndex      -> Generation,
+    QuantumNumbers   -> {Q->2/3},
+    PDG              -> {4000252,4000254,4000256},
+    Mass             -> {MV3uR, {MV3uR1, 1000.}, {MV3uR2, 1000.}, {MV3uR3, 1000.}},
+    Width            -> {WV3uR, {WV3uR1, 10.  }, {WV3uR2, 10.  }, {WV3uR3, 10.  }}
+  },*)
+
+  V[16] == {
+    ClassName        -> V3dR,
+    ClassMembers     -> {V3dR1, V3dR2, V3dR3},
+    SelfConjugate    -> False,
+    Indices          -> {Index[Generation],Index[Colour]},
+    FlavorIndex      -> Generation,
+    QuantumNumbers   -> {Q->-1/3},
+    PDG              -> {4000001,4000003,4000005},
+    Mass             -> {MV3dR, {MV3dR1, 1000.},{MV3dR2, 1000.},{MV3dR3, 1000.}},
+    Width            -> {WV3dR, {WV3dR1, 10.},{WV3dR2, 10.},{WV3dR3, 10.}}
+  }(*,
+  S[16] == {
+    ClassName        -> G3dR,
+    Goldstone        -> V3dR,
+    ClassMembers     -> {G3dR1, G3dR2, G3dR3},
+    SelfConjugate    -> False,
+    Indices          -> {Index[Generation],Index[Colour]},
+    FlavorIndex      -> Generation,
+    QuantumNumbers   -> {Q->-1/3},
+    PDG              -> {4000251,4000253,4000255},
+    Mass             -> {MV3dR, {MV3dR1, 1000.}, {MV3dR2, 1000.}, {MV3dR3, 1000.}},
+    Width            -> {WV3dR, {WV3dR1, 10.  }, {WV3dR2, 10.  }, {WV3dR3, 10.  }}
+  }*)
+
+
+};
+
+
+(* ************************** *)
+(* *****   Parameters   ***** *)
+(* ************************** *)  
+M$Parameters = {
+
+ gV3L == {
+      ParameterType    -> External,
+      Indices          -> {Index[Generation], Index[Generation]},
+      InteractionOrder -> {DMT, 1},
+      BlockName        -> DMINPUTVQL,
+      TeX              -> Subscript[g,V3L],
+      Description      -> "Quark-V3 left-handed coupling",
+      Definitions      -> {gV3L[i_?NumericQ, j_?NumericQ] :> 0  /; (i =!= j)},
+      Value            -> {gV3L[1,1] -> 1.1, gV3L[2,2] -> 1.1, gV3L[3,3] -> 1.1}
+ },
+
+ gV3uR == {
+      ParameterType    -> External,
+      Indices          -> {Index[Generation], Index[Generation]},
+      InteractionOrder -> {DMT, 1},
+      BlockName        -> DMINPUTVUR,
+      TeX              -> Subscript[g,V3uR],
+      Description      -> "up-type quark V3 right-handed coupling",
+      Definitions      -> {gV3uR[i_?NumericQ, j_?NumericQ] :> 0  /; (i =!= j)},
+      Value            -> {gV3uR[1,1] -> 1.1, gV3uR[2,2] -> 1.1, gV3uR[3,3] -> 1.1}
+ },
+
+ gV3dR == {
+      ParameterType    -> External,
+      Indices          -> {Index[Generation], Index[Generation]},
+      InteractionOrder -> {DMT, 1},
+      BlockName        -> DMINPUTVDR,
+      TeX              -> Subscript[g,V3dR],
+      Description      -> "down-type quark V3 right-handed coupling",
+      Definitions      -> {gV3dR[i_?NumericQ, j_?NumericQ] :> 0  /; (i =!= j)},
+      Value            -> {gV3dR[1,1] -> 1.1, gV3dR[2,2] -> 1.1, gV3dR[3,3] -> 1.1}
+ },
+
+ kg == {
+    ParameterType -> External,
+    BlockName     -> ANOMCOUPINPUT,
+    Value         -> 0.,
+    Description   -> "Anomalous Chromomagnetic Coupling" }
+};
+
+
+(* ************************** *)
+(* *****   Lagrangian   ***** *)
+(* ************************** *)
+
+LV3K := -1/2 * ( DC[V3Lbar[nu,gg,ff,cc],mu] - DC[V3Lbar[mu,gg,ff,cc],nu] )( DC[V3L[nu,gg,ff,cc],mu] - DC[V3L[mu,gg,ff,cc],nu] ) + MV3uL[ff]^2 V3uLbar[mu,ff,cc] V3uL[mu,ff,cc] + MV3dL[ff]^2 V3dLbar[mu,ff,cc] V3dL[mu,ff,cc] -
+         1/2 * ( DC[V3uRbar[nu,ff,cc],mu] - DC[V3uRbar[mu,ff,cc],nu] )( DC[V3uR[nu,ff,cc],mu] - DC[V3uR[mu,ff,cc],nu] ) + MV3uR[ff]^2 V3uRbar[mu,ff,cc] V3uR[mu,ff,cc] -
+         1/2 * ( DC[V3dRbar[nu,ff,cc],mu] - DC[V3dRbar[mu,ff,cc],nu] )( DC[V3dR[nu,ff,cc],mu] - DC[V3dR[mu,ff,cc],nu] ) + MV3dR[ff]^2 V3dRbar[mu,ff,cc] V3dR[mu,ff,cc] +
+         I * Xdbar.Ga[mu].del[Xd,mu] - MXd Xdbar.Xd + I/2 * Xmbar.Ga[mu].del[Xm,mu] - MXm/2 Xmbar.Xm;
+
+LG3K :=  del[G3uLbar[ff,cc],mu] del[G3uL[ff,cc],mu] + MV3uL[ff] del[G3uLbar[ff,cc], mu] V3uL[mu,ff,cc] + MV3uL[ff] del[G3uL[ff,cc], mu] V3uLbar[mu,ff,cc] +
+         del[G3uRbar[ff,cc],mu] del[G3uR[ff,cc],mu] + MV3uR[ff] del[G3uRbar[ff,cc], mu] V3uR[mu,ff,cc] + MV3uR[ff] del[G3uR[ff,cc], mu] V3uRbar[mu,ff,cc] +
+         del[G3dLbar[ff,cc],mu] del[G3dL[ff,cc],mu] + MV3dL[ff] del[G3dLbar[ff,cc], mu] V3dL[mu,ff,cc] + MV3dL[ff] del[G3dL[ff,cc], mu] V3dLbar[mu,ff,cc] +
+         del[G3dRbar[ff,cc],mu] del[G3dR[ff,cc],mu] + MV3dR[ff] del[G3dRbar[ff,cc], mu] V3dR[mu,ff,cc] + MV3dR[ff] del[G3dR[ff,cc], mu] V3dRbar[mu,ff,cc] ;
+
+LV3G := -I * gs * ( 1 - kg ) * T[aa,cc1,cc2] *  FS[G,mu,nu,aa] * ( V3Lbar[mu,gg,ff,cc1] V3L[nu,gg,ff,cc2] + V3uRbar[mu,ff,cc1] V3uR[nu,ff,cc2] + V3dRbar[mu,ff,cc1] V3dR[nu,ff,cc2]  ) ;
+
+LV3 := Ga[mu,sp1,sp2] * (gV3L[ll,ff] V3L[mu,gg,ff,cc] QLbar[sp1,gg,ll,cc] + gV3uR[ll,ff] V3uR[mu,ff,cc] uRbar[sp1,ll,cc] + gV3dR[ll,ff] V3dR[mu,ff,cc] dRbar[sp1,ll,cc]) . (Xd[sp2]+Xm[sp2]);
+
+LG3 := ExpandIndices[- (
+         gV3uL[ll,ff]/MV3uL[ff] G3uL[ff,cc] (Mu[ll] ProjM[sp1,sp2] - MXd ProjP[sp1,sp2]) uqbar[sp1,ll,cc] +
+         gV3dL[ll,ff]/MV3dL[ff] G3dL[ff,cc] (Md[ll] ProjM[sp1,sp2] - MXd ProjP[sp1,sp2]) dqbar[sp1,ll,cc] +
+         gV3uR[ll,ff]/MV3uR[ff] G3uR[ff,cc] (Mu[ll] ProjP[sp1,sp2] - MXd ProjM[sp1,sp2]) uqbar[sp1,ll,cc] +
+         gV3dR[ll,ff]/MV3dR[ff] G3dR[ff,cc] (Md[ll] ProjP[sp1,sp2] - MXd ProjM[sp1,sp2]) dqbar[sp1,ll,cc]  ) . Xd[sp2] -
+       ( gV3uL[ll,ff]/MV3uL[ff] G3uL[ff,cc] (Mu[ll] ProjM[sp1,sp2] - MXm ProjP[sp1,sp2]) uqbar[sp1,ll,cc] +
+         gV3dL[ll,ff]/MV3dL[ff] G3dL[ff,cc] (Md[ll] ProjM[sp1,sp2] - MXm ProjP[sp1,sp2]) dqbar[sp1,ll,cc] +
+         gV3uR[ll,ff]/MV3uR[ff] G3uR[ff,cc] (Mu[ll] ProjP[sp1,sp2] - MXm ProjM[sp1,sp2]) uqbar[sp1,ll,cc] +
+         gV3dR[ll,ff]/MV3dR[ff] G3dR[ff,cc] (Md[ll] ProjP[sp1,sp2] - MXm ProjM[sp1,sp2]) dqbar[sp1,ll,cc]  ) . Xm[sp2], FlavorExpand->True];
+
+
+
+(* DEFAULT: YANG-MILLS MODEL *)
+FeynmanGauge=True;
+LtV3DM := LV3K + LG3K + LV3 + LG3 + LV3G + HC[LV3 + LG3];
+LtV3DM := LV3K + LV3 + LV3G + HC[LV3];

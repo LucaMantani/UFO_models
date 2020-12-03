@@ -1,0 +1,180 @@
+(* ****************************************************************** *)
+(* *****                                                        ***** *)
+(* *****  FeynRules model file: Simplified DM models            ***** *)
+(* *****                      t-channel spin-0 triplet mediator ***** *)
+(* *****  Author: B. Fuks, L. Mantani, K. Mawatari              ***** *)
+(* *****                                                        ***** *)
+(* ****************************************************************** *)
+
+
+(* ************************** *)
+(* *****  Information   ***** *)
+(* ************************** *)
+M$ModelName = "DMsimp_t_s3";
+
+M$Information = {
+ Authors      -> {"B. Fuks, L. Mantani, K. Mawatari"},
+ Institutions -> {"Sorbonne Univ., Univ. catholique de Louvain, LPSC Grenoble"},
+ Emails       -> {"fuks@lpthe.jussieu.fr", "kentarou.mawatari@lpsc.in2p3.fr"},
+ URLs         -> "http://feynrules.irmp.ucl.ac.be/wiki/DMsimp/",
+ References   -> {"xxx et al., arXiv:17xx.xxxxx"},
+ Version      -> "1.4",
+ Date         -> "2017.11.14"
+};
+
+(* ************************** *)
+(* *****  Change  log   ***** *)
+(* ************************** *)
+
+(* 2016.10.10 v1.0 - release version.                               *)
+(* 2017.06.08 v1.1 - Missing mass terms added.                      *)
+(* 2017.09.28 v1.2 - Making all couplings matrices.                 *)
+(* 2017.10.06 v1.3 - Adding anticommutative product for DM fermions *)
+(* 2017.11.14 v1.4 - Restoring EW gauge invariance                  *)
+
+
+(***** Setting for interaction order (as e.g. used by MadGraph 5)  ******)
+
+M$InteractionOrderLimit = { {DMT, 2} };
+
+M$InteractionOrderHierarchy = { {QCD, 1}, {DMT, 2}, {QED, 2} };
+
+
+(* ************************** *)
+(* *****     Fields     ***** *)
+(* ************************** *)
+M$ClassesDescription = {
+
+  F[7] == {
+    ClassName     -> Xd,
+    SelfConjugate -> False,
+    Mass          -> {MXd, 10.},
+    Width         -> 0,
+    PDG           -> 52,
+    FullName      -> "Dirac DM"
+  },
+
+  F[8] == {
+    ClassName     -> Xm,
+    SelfConjugate -> True,
+    Mass          -> {MXm, 100000.},
+    Width         -> 0,
+    PDG           -> 522,
+    FullName      -> "Majorana DM"
+   },
+
+  S[36] == {
+    ClassName      -> S3L,
+    Unphysical     -> True,
+    SelfConjugate  -> False,
+    Indices        -> {Index[SU2D], Index[Generation],Index[Colour]},
+    FlavorIndex    -> SU2D,
+    QuantumNumbers -> {Y->1/6},
+    Definitions    -> { S3L[1,ff_,cc_] -> S3uL[ff,cc], S3L[2,ff_,cc_] -> S3dL[ff,cc]}
+   },
+
+  S[21] == {
+    ClassName      -> S3uL,
+    ClassMembers   -> {S3uL1, S3uL2, S3uL3},
+    SelfConjugate  -> False,
+    Indices        -> {Index[Generation],Index[Colour]},
+    FlavorIndex    -> Generation,
+    QuantumNumbers -> {Q->2/3},
+    PDG            -> {1000002,1000004,1000006},
+    Mass           -> {MS3uL, {MS3uL1, 1000.}, {MS3uL2, 1000.}, {MS3uL3, 1000.}},
+    Width          -> {WS3uL, {WS3uL1, 10.  }, {WS3uL2, 10.  }, {WS3uL3, 10.  }}
+  },
+
+  S[22] == {
+    ClassName      -> S3dL,
+    ClassMembers   -> {S3dL1, S3dL2, S3dL3},
+    SelfConjugate  -> False,
+    Indices        -> {Index[Generation],Index[Colour]},
+    FlavorIndex    -> Generation,
+    QuantumNumbers -> {Q->-1/3},
+    PDG            -> {1000001,1000003,1000005},
+    Mass           -> {MS3dL, {MS3dL1, 1000.}, {MS3dL2, 1000.}, {MS3dL3, 1000.}},
+    Width          -> {WS3dL, {WS3dL1, 10.  }, {WS3dL2, 10.  }, {WS3dL3, 10.  }}
+  },
+
+  S[23] == {
+    ClassName      -> S3uR,
+    ClassMembers   -> {S3uR1, S3uR2, S3uR3},
+    SelfConjugate  -> False,
+    Indices        -> {Index[Generation],Index[Colour]},
+    FlavorIndex    -> Generation,
+    QuantumNumbers -> {Q->2/3},
+    PDG            -> {2000002,2000004,2000006},
+    Mass           -> {MS3uR, {MS3uR1, 1000.}, {MS3uR2, 1000.}, {MS3uR3, 1000.}},
+    Width          -> {WS3uR, {WS3uR1, 10.  }, {WS3uR2, 10.  }, {WS3uR3, 10.  }}
+  },
+
+  S[24] == {
+    ClassName      -> S3dR,
+    ClassMembers   -> {S3dR1, S3dR2, S3dR3},
+    SelfConjugate  -> False,
+    Indices        -> {Index[Generation],Index[Colour]},
+    FlavorIndex    -> Generation,
+    QuantumNumbers -> {Q->-1/3},
+    PDG            -> {2000001,2000003,2000005},
+    Mass           -> {MS3dR, {MS3dR1, 1000.}, {MS3dR2, 1000.}, {MS3dR3, 1000.}},
+    Width          -> {WS3dR, {WS3dR1, 10.  }, {WS3dR2, 10.  }, {WS3dR3, 10.  }}
+  }
+};
+
+
+(* ************************** *)
+(* *****   Parameters   ***** *)
+(* ************************** *)  
+M$Parameters = {
+
+ gS3L == {
+      ParameterType    -> External,
+      Indices          -> {Index[Generation], Index[Generation]},
+      InteractionOrder -> {DMT, 1},
+      BlockName        -> DMINPUTSQL,
+      TeX              -> Subscript[g,S3L],
+      Description      -> "Quark-S3 left-handed coupling",
+      Definitions      -> {gS3L[i_?NumericQ, j_?NumericQ] :> 0  /; (i =!= j)},
+      Value            -> {gS3L[1,1] -> 1.1, gS3L[2,2] -> 1.1, gS3L[3,3] -> 1.1}
+ },
+
+ gS3uR == {
+      ParameterType    -> External,
+      Indices          -> {Index[Generation], Index[Generation]},
+      InteractionOrder -> {DMT, 1},
+      BlockName        -> DMINPUTSUR,
+      TeX              -> Subscript[g,S3uR],
+      Description      -> "up-type quark S3 right-handed coupling",
+      Definitions      -> {gS3uR[i_?NumericQ, j_?NumericQ] :> 0  /; (i =!= j)},
+      Value            -> {gS3uR[1,1] -> 1.1, gS3uR[2,2] -> 1.1, gS3uR[3,3] -> 1.1}
+ },
+
+ gS3dR == {
+      ParameterType    -> External,
+      Indices          -> {Index[Generation], Index[Generation]},
+      InteractionOrder -> {DMT, 1},
+      BlockName        -> DMINPUTSDR,
+      TeX              -> Subscript[g,S3dR],
+      Description      -> "down-type quark S3 right-handed coupling",
+      Definitions      -> {gS3dR[i_?NumericQ, j_?NumericQ] :> 0  /; (i =!= j)},
+      Value            -> {gS3dR[1,1] -> 1.1, gS3dR[2,2] -> 1.1, gS3dR[3,3] -> 1.1}
+ }
+};
+
+
+(* ************************** *)
+(* *****   Lagrangian   ***** *)
+(* ************************** *)
+
+LS3K := ExpandIndices[
+        I * Xdbar.Ga[mu].del[Xd,mu] - MXd Xdbar.Xd +
+        I/2 * Xmbar.Ga[mu].del[Xm,mu] - MXm/2 Xmbar.Xm +
+        DC[S3Lbar[gg,ff,cc],mu] DC[S3L[gg,ff,cc],mu] - MS3uL[ff]^2 S3uLbar[ff,cc] S3uL[ff,cc] - MS3dL[ff]^2 S3dLbar[ff,cc] S3dL[ff,cc] +
+        DC[S3uRbar[ff,cc],mu] DC[S3uR[ff,cc],mu] - MS3uR[ff]^2 S3uRbar[ff,cc] S3uR[ff,cc] +
+        DC[S3dRbar[ff,cc],mu] DC[S3dR[ff,cc],mu] - MS3dR[ff]^2 S3dRbar[ff,cc] S3dR[ff,cc],
+     FlavorExpand->True] ;
+
+LS3 := ( gS3L[ff,ll] S3L[gg,ff,cc] QLbar[sp2,gg,ll,cc] + gS3uR[ff,ll] S3uR[ff,cc] uRbar[sp2,ll,cc] + gS3dR[ff,ll] S3dR[ff,cc] dRbar[sp2,ll,cc]  ) . (Xd[sp2]+Xm[sp2]);
+
+LtS3DM := LS3K + LS3 + HC[LS3];

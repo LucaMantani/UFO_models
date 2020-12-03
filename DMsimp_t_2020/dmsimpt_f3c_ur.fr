@@ -1,0 +1,75 @@
+(* ****************************************************************** *)
+(* *****                                                        ***** *)
+(* *****  FeynRules model file: Simplified DM models            ***** *)
+(* *****                                                        ***** *)
+(* *****  Author: Benjamin Fuks                                 ***** *)
+(* *****                                                        ***** *)
+(* ****************************************************************** *)
+
+(* ************************** *)
+(* *****  Information   ***** *)
+(* ************************** *)
+M$ModelName = "DMsimp_t";
+
+M$Information = { Authors->{"Benjamin Fuks"}, Emails->{"fuks@lpthe.jussieu.fr"},
+                  Institutions->{"LPTHE / Sorbonne U."},
+                  Date->"29.10.19", Version->"1.2",
+                  URLs->"http://feynrules.irmp.ucl.ac.be/wiki/DMsimpt/"};
+
+(* ************************** *)
+(* *****  Change  log   ***** *)
+(* ************************** *)
+
+(* 2019.05.22 v1.0 - First version                       *)
+(* 2019.08.27 v1.1 - Changing a few PDG codes            *)
+(* 2019.10.29 v1.2 - Adding complex scalar and vector DM *)
+
+(* ************************** *)
+(* *** Interaction orders *** *)
+(* ************************** *)
+M$InteractionOrderLimit     = { {DMT, 2} };
+M$InteractionOrderHierarchy = { {QCD, 1}, {DMT, 2}, {QED, 2} };
+
+(* ************************** *)
+(* *****     Fields     ***** *)
+(* ************************** *)
+M$ClassesDescription = {
+  (* Dark matter *)
+  S[101] == { ClassName -> Xc, SelfConjugate -> False,
+              Mass -> {MXc, 14.}, Width -> 0, PDG -> 56},
+
+  (* Mediators *)
+  F[203] == { ClassName -> YF3u, SelfConjugate -> False,
+              Indices -> {Index[Colour]},
+              QuantumNumbers -> {Y->2/3, Q->2/3}, PDG -> {5920002},
+              Mass  -> 4000.,
+              Width -> 40.}
+};
+
+(* ************************** *)
+(* *****   Parameters   ***** *)
+(* ************************** *)
+M$Parameters = {
+ lamF3u == { ParameterType -> External, ComplexParameter -> False,
+            TeX -> Subscript[OverHat[\[Lambda]],u], BlockName -> DMF3U,
+            InteractionOrder -> {DMT,1},
+            Value -> 1.0}
+};
+
+(* ************************** *)
+(* *****   Lagrangian   ***** *)
+(* ************************** *)
+
+LDMSIMPtF3C := Block[{LKinDM, LKinF3, LIntF3, ii,ff,ffp,cc,mu,nu,sp,sp2},
+  LKinDM := del[Xc,mu] del[Xcbar,mu] - MXc^2 Xc Xcbar;
+
+  LKinF3 :=  \
+      Plus @@ (I anti[#].Ga[mu].DC[#,mu] &/@ {YF3u} ) \
+    - MYF3u YF3ubar[sp,cc].YF3u[sp,cc];
+
+  LIntF3 := lamF3u YF3ubar[sp,cc].uR[sp2,1,cc] (Xc IndexDelta[sp,sp2]);
+
+LKinDM + LKinF3 + LIntF3 + HC[LIntF3]];
+
+
+

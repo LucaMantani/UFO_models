@@ -1,0 +1,67 @@
+(* ****************************************************************** *)
+(* *****                                                        ***** *)
+(* *****  FeynRules model file: H potential in k-framework      ***** *)
+(* *****                                                        ***** *)
+(* *****  Author: L. Mantani                                    ***** *)
+(* *****                                                        ***** *)
+(* ****************************************************************** *)
+
+
+(* ************************** *)
+(* *****  Information   ***** *)
+(* ************************** *)
+
+M$ModelName = "muon_yukawa";
+
+M$Information = {
+ Authors      -> {"L. Mantani"},
+ Institutions -> {"Univ. catholique de Louvain"},
+ Emails       -> {"luca.mantani@uclouvain.be"},
+ References   -> {"xxx et al., arXiv:17xx.xxxxx"},
+ Version      -> "1.1",
+ Date         -> "2020.12.03"
+};
+
+(* ************************** *)
+(* *****  Change  log   ***** *)
+(* ************************** *)
+
+(* 2016.10.10 v1.0 - release version.                               *)
+M$InteractionOrderLimit = {{NP, 2}};
+
+M$InteractionOrderHierarchy = { {QCD, 1}, {NP, 2}, {QED, 2} };
+
+(* ************************** *)
+(* *****   Parameters   ***** *)
+(* ************************** *)  
+M$Parameters = {
+    Lambda == { 
+        ParameterType    -> External, 
+        BlockName        -> DIM6, 
+        OrderBlock       -> 1,
+        TeX              -> \[CapitalLambda],
+        Value            -> 1000,
+        InteractionOrder -> {NP,-1},
+        Description      -> "Scale of the new physics"
+  },
+
+    cmup == {
+        ParameterType -> External,
+        BlockName     -> DIM6,
+        InteractionOrder -> {QED, 3},
+        OrderBlock    -> 2,
+        Value         -> 1.0,
+        Description   -> "Muon yukawa"
+    }
+
+};
+
+
+(* ************************** *)
+(* *****   Lagrangian   ***** *)
+(* ************************** *)
+Block[{ii, jj},
+LmuH := cmup/Lambda^2 (Phibar[ii] Phi[ii] - vev^2/2) LLbar[sp, jj, 2].lR [sp, 2] Phi[jj] +
+        + HC[cmup/Lambda^2 (Phibar[ii] Phi[ii] - vev^2/2) LLbar[sp, jj, 2].lR [sp, 2] Phi[jj]]
+
+]

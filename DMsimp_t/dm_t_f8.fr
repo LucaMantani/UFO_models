@@ -1,0 +1,98 @@
+(* ****************************************************************** *)
+(* *****                                                        ***** *)
+(* *****  FeynRules model file: Simplified DM models            ***** *)
+(* *****                      t-channel spin-1/2 octet mediator ***** *)
+(* *****  Author: B. Fuks, L. Mantani, K. Mawatari              ***** *)
+(* *****                                                        ***** *)
+(* ****************************************************************** *)
+
+(* ************************** *)
+(* *****  Information   ***** *)
+(* ************************** *)
+M$ModelName = "DMsimp_t_f8";
+
+M$Information = {
+ Authors      -> {"B. Fuks, L. Mantani, K. Mawatari"},
+ Institutions -> {"Sorbonne Univ., Univ. catholique de Louvain, LPSC Grenoble"},
+ Emails       -> {"fuks@lpthe.jussieu.fr","luca.mantani@uclouvain.be", "kentarou.mawatari@lpsc.in2p3.fr"},
+ URLs         -> "http://feynrules.irmp.ucl.ac.be/wiki/DMsimp/",
+ References   -> {"xxx et al., arXiv:17xx.xxxxx"},
+ Version      -> "1.0",
+ Date         -> "2017.10.03"
+};
+
+(* ************************** *)
+(* *****  Change  log   ***** *)
+(* ************************** *)
+
+(* 2016.10.10 v1.0 - release version.               *)
+
+(***** Setting for interaction order (as e.g. used by MadGraph 5)  ******)
+
+M$InteractionOrderLimit = {
+ {DMT, 2}
+};
+
+M$InteractionOrderHierarchy = {
+ {QCD, 1}, {DMT, 2}, {QED, 2}
+};
+
+(* ************************** *)
+(* *****     Fields     ***** *)
+(* ************************** *)
+
+M$ClassesDescription = {
+
+F[7] == { ClassName -> Xd,
+	SelfConjugate -> False,
+	Mass -> {MXd, 10.},
+	Width->0,
+	PDG -> 52,
+	TeX -> Subscript[X,d],
+	FullName -> "Dirac fermion DM" },
+
+F[16] == { ClassName -> F8,
+	SelfConjugate -> False,
+	Indices -> {Index[Gluon]},
+	PDG -> 999999,
+	Mass -> {MF8, 1000.},
+	Width -> {WF8, 10.} }
+};
+
+(* ************************** *)
+(* *****   Parameters   ***** *)
+(* ************************** *)
+
+M$Parameters = {
+
+gd == {
+	ParameterType    -> External,
+    InteractionOrder -> {DMT, 1},
+    BlockName        -> DMINPUT,
+    TeX              -> Subscript[g,d],
+    Description      -> "",
+    Value            -> 1.0
+},
+
+Lambda == {
+	ParameterType    -> External,
+    BlockName        -> DMINPUT,
+    Description      -> "",
+    Value            -> 1000.0
+
+}
+
+};
+
+(* ************************** *)
+(* *****   Lagrangian   ***** *)
+(* ************************** *)
+
+Lkin := I * F8bar[sp1,cc] Ga[mu,sp1,sp2] DC[F8[sp2,cc],mu] ;
+
+Lint := gd/Lambda * FS[G,mu,nu,cc] F8bar[sp1,cc] * I * Ga[mu,sp1,sp2] Ga[nu,sp2,sp3] Xd[sp3] ;
+
+LtF8DM := Lkin + Lint + HC[Lint] ; 
+
+
+

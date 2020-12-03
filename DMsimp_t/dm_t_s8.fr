@@ -1,0 +1,188 @@
+(* ****************************************************************** *)
+(* *****                                                        ***** *)
+(* *****  FeynRules model file: Simplified DM models            ***** *)
+(* *****                      t-channel spin-0 octet mediator   ***** *)
+(* *****  Author: B. Fuks, L. Mantani, K. Mawatari              ***** *)
+(* *****                                                        ***** *)
+(* ****************************************************************** *)
+
+(* ************************** *)
+(* *****  Information   ***** *)
+(* ************************** *)
+M$ModelName = "DMsimp_t_s8";
+
+M$Information = {
+ Authors      -> {"B. Fuks, L. Mantani, K. Mawatari"},
+ Institutions -> {"Sorbonne Univ., Univ. catholique de Louvain, LPSC Grenoble"},
+ Emails       -> {"fuks@lpthe.jussieu.fr","luca.mantani@uclouvain.be", "kentarou.mawatari@lpsc.in2p3.fr"},
+ URLs         -> "http://feynrules.irmp.ucl.ac.be/wiki/DMsimp/",
+ References   -> {"xxx et al., arXiv:17xx.xxxxx"},
+ Version      -> "1.0",
+ Date         -> "2017.10.03"
+};
+
+(* ************************** *)
+(* *****  Change  log   ***** *)
+(* ************************** *)
+
+(* 2016.10.10 v1.0 - release version.               *)
+
+(***** Setting for interaction order (as e.g. used by MadGraph 5)  ******)
+
+M$InteractionOrderLimit = {
+ {DMT0, 2}, {DMT1, 2}, {DMT2, 2}
+};
+
+M$InteractionOrderHierarchy = {
+ {QCD, 1}, {DMT0, 2}, {DMT1, 2}, {DMT2, 2}, {QED, 2}
+};
+
+(* ************************** *)
+(* *****     Fields     ***** *)
+(* ************************** *)
+
+M$ClassesDescription = {
+
+S[7] == { ClassName -> Xr,
+	SelfConjugate -> True,
+	Mass -> {MXr, 10.},
+	Width->0,
+	PDG -> 5000511,
+	TeX -> Subscript[X,r],
+	FullName -> "Real scalar DM" },
+
+V[13] == { ClassName -> Xv,
+	SelfConjugate -> True,
+	Mass -> {MXv, 10.},
+    Width -> 0,
+    PDG -> 12345678,
+    TeX -> Subscript[X,v],
+    FullName -> "Real vector DM" },
+
+S[21] == { ClassName -> S8,
+	SelfConjugate -> True,
+	Indices -> {Index[Gluon]},
+	PDG -> 999999,
+	Mass -> {MS8, 1000.},
+	Width -> {WS8, 10.} }
+};
+	
+
+(* ************************** *)
+(* *****   Parameters   ***** *)
+(* ************************** *)
+
+M$Parameters = {
+
+gr == {
+	ParameterType    -> External,
+    InteractionOrder -> {DMT2, 1},
+    BlockName        -> DMINPUT,
+    TeX              -> Subscript[g,r],
+    Description      -> "",
+    Value            -> 1.0
+},
+
+cr == {
+	ParameterType    -> External,
+    InteractionOrder -> {DMT2, 1},
+    BlockName        -> DMINPUT,
+    TeX              -> Subscript[c,r],
+    Description      -> "",
+    Value            -> 1.0
+},
+
+yr == {
+	ParameterType    -> External,
+    InteractionOrder -> {DMT2, 1},
+    BlockName        -> DMINPUT,
+    TeX              -> Subscript[y,r],
+    Description      -> "",
+    Value            -> 1.0
+},
+
+gv == {
+	ParameterType    -> External,
+    InteractionOrder -> {DMT1, 1},
+    BlockName        -> DMINPUT,
+    TeX              -> Subscript[g,v],
+    Description      -> "",
+    Value            -> 1.0
+},
+
+cv == {
+	ParameterType    -> External,
+    InteractionOrder -> {DMT1, 1},
+    BlockName        -> DMINPUT,
+    TeX              -> Subscript[c,v],
+    Description      -> "",
+    Value            -> 1.0
+},
+
+Lambda == {
+	ParameterType    -> External,
+    BlockName        -> DMINPUT,
+    Description      -> "",
+    Value            -> 1000.0
+
+},
+
+l1 == {
+	ParameterType    -> External,
+	InteractionOrder -> {DMT0, 1},
+    BlockName        -> DMINPUT,
+    Description      -> "",
+    Value            -> 1.0 
+	
+},
+
+l2 == {
+	ParameterType    -> External,
+	InteractionOrder -> {DMT2, 1},
+    BlockName        -> DMINPUT,
+    Description      -> "",
+    Value            -> 1.0
+	
+},
+
+l3 == {
+	ParameterType    -> External,
+	InteractionOrder -> {DMT2, 1},
+    BlockName        -> DMINPUT,
+    Description      -> "",
+    Value            -> 1.0
+	
+},
+
+lv == {
+	ParameterType    -> External,
+	InteractionOrder -> {DMT0, 1},
+    BlockName        -> DMINPUT,
+    Description      -> "",
+    Value            -> 1.0
+	
+}
+
+
+};
+
+
+(* ************************** *)
+(* *****   Lagrangian   ***** *)
+(* ************************** *)
+
+Lkin := 1/2 * DC[S8[aa],mu] DC[S8[aa],mu] ;
+
+Lintr := gr/(Lambda^2) * (DC[FS[G,mu,nu,aa],mu] DC[S8[aa],nu] Xr) +
+	    cr/(Lambda^2) * (FS[G,mu,nu,aa] DC[S8[aa],nu] del[Xr,mu]) +
+		yr/(Lambda^2) * (DC[FS[G,mu,nu,aa],mu] S8[aa] del[Xr,nu]) +
+		l1 * S8[aa] S8[aa] Xr Xr +
+		l2/(Lambda^2) * FS[G,mu,nu,aa] FS[G,mu,nu,aa] Xr Xr +
+		l3/(Lambda^2) * FS[G,mu,nu,aa] FS[G,mu,nu,aa] S8[bb] S8[bb] ;
+
+Lintv := gv/Lambda * FS[G,mu,nu,aa] DC[S8[aa],mu] Xv[nu] +
+		 cv/Lambda * FS[G,mu,nu,aa] S8[aa] del[Xv[nu],mu] +
+		 lv * S8[aa] S8[aa] Xv[mu] Xv[mu] ; 
+
+LtS8 := Lkin + Lintr +Lintv ; 
+
