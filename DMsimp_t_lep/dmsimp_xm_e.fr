@@ -1,0 +1,139 @@
+(* ****************************************************************** *)
+(* *****                                                        ***** *)
+(* *****  FeynRules model file: Simplified DM models            ***** *)
+(* *****                      t-channel spin-0 mediator         ***** *)
+(* *****  Author: M. Cermeño                                    ***** *)
+(* *****                                                        ***** *)
+(* ****************************************************************** *)
+
+
+(* ************************** *)
+(* *****  Information   ***** *)
+(* ************************** *)
+M$ModelName = "DMsimp_xm_e";
+
+M$Information = {
+ Authors      -> {"M. Cermeño, L. Mantani"},
+ Institutions -> {"Univ. catholique de Louvain"},
+ Emails       -> {"marina.cermeno@uclouvain.be"},
+ URLs         -> "http://feynrules.irmp.ucl.ac.be/wiki/DMsimp/",
+ References   -> {"xxx et al., arXiv:17xx.xxxxx"},
+ Version      -> "1.4",
+ Date         -> "2020.02.20"
+};
+
+(* ************************** *)
+(* *****  Change  log   ***** *)
+(* ************************** *)
+
+
+(***** Setting for interaction order (as e.g. used by MadGraph 5)  ******)
+
+M$InteractionOrderLimit = { {DMT, 2} };
+
+M$InteractionOrderHierarchy = { {QCD, 1}, {DMT, 2}, {QED, 2} };
+
+
+(* ************************** *)
+(* *****     Fields     ***** *)
+(* ************************** *)
+M$ClassesDescription = {
+
+  F[7] == {
+    ClassName     -> Xd,
+    SelfConjugate -> False,
+    Mass          -> {MXd, 60.},
+    Width         -> 0,
+    PDG           -> 52,
+    FullName      -> "Dirac DM"
+  },
+
+  F[8] == {
+    ClassName     -> Xm,
+    SelfConjugate -> True,
+    Mass          -> {MXm, 60.},
+    Width         -> 0,
+    PDG           -> 522,
+    FullName      -> "Majorana DM"
+   },
+
+  
+  S[24] == { ClassName -> SL, Unphysical -> True, SelfConjugate -> False,
+              Indices -> {Index[SU2D]}, FlavorIndex -> SU2D,
+              QuantumNumbers -> {Y->-1/2},
+              Definitions -> {SL[1]->SvL, SL[2]->SeL}
+            },
+
+  S[25] == {
+    ClassName      -> SeL,
+    SelfConjugate  -> False,
+    QuantumNumbers -> {Q->-1, LeptonNumber -> 1},
+    PDG            ->  9999999,
+    Mass           -> {MSeL, 100.},
+    Width          -> {WSeL, 0.281301}
+  },
+
+  S[26] == {
+    ClassName      -> SvL,
+    SelfConjugate  -> False,
+    QuantumNumbers -> {Q->0, LeptonNumber -> 1},
+    PDG            ->  9999997,
+    Mass           -> {MSvL, 100.},
+    Width          -> {WSvL, 0.281301}
+  },
+
+  S[27] == {
+    ClassName      -> SeR,
+    SelfConjugate  -> False,
+    QuantumNumbers -> {Q->-1, Y-> -1, LeptonNumber -> 1},
+    PDG            ->  9999998,
+    Mass           -> {MSeR, 100.},
+    Width          -> {WSeR, 0.281301}
+  }
+
+};
+
+
+(* ************************** *)
+(* *****   Parameters   ***** *)
+(* ************************** *)  
+M$Parameters = {
+
+ al == {
+      ParameterType    -> External,
+      InteractionOrder -> {DMT, 1},
+      BlockName        -> DMINPUTS,
+      TeX              -> Subscript[a,l],
+      Description      -> "Electron-slepton left-handed coupling",
+      Value            -> 0.262758
+ },
+
+  ar == {
+      ParameterType    -> External,
+      InteractionOrder -> {DMT, 1},
+      BlockName        -> DMINPUTS,
+      TeX              -> Subscript[a,r],
+      Description      -> "Electron-slepton right-handed coupling",
+      Value            -> 0.131379
+ }
+
+};
+
+
+(* ************************** *)
+(* *****   Lagrangian   ***** *)
+(* ************************** *)
+
+LK := ExpandIndices[
+        I * Xdbar.Ga[mu].del[Xd,mu] - MXd Xdbar.Xd +
+        I/2 * Xmbar.Ga[mu].del[Xm,mu] - MXm/2 Xmbar.Xm +
+        DC[SL[ii],mu] DC[SLbar[ii],mu] - MSeL^2 SeL SeLbar - MSvL^2 SvL SvLbar +
+        DC[SeR,mu] DC[SeRbar,mu] - MSeR^2 SeR SeRbar,
+     FlavorExpand->True] ;
+
+Lint := Block[{sp, ii},
+        al * LLbar[sp, ii, 1].Xd[sp] SL[ii] + al * LLbar[sp, ii, 1].Xm[sp] SL[ii] +
+        ar * lRbar[sp, 1].Xd[sp] SeR + ar * lRbar[sp, 1].Xm[sp] SeR
+];
+
+LDM := LK + Lint + HC[Lint];
